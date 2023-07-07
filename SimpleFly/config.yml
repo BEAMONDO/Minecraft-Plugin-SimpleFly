@@ -1,0 +1,27 @@
+Config:
+  help-message: true
+  help-text:
+  - '&b<-----------------&aCOMMANDS&b----------------->'
+  - '&e/sf help &7Show this message'
+  - '&e/sf version&7 &7Show plugin version'
+  - '&e/sf reload &7Reload plugin'
+  - '&e/fly &7Enable fly'
+  - '&e/fly <player> &7Enable fly to other player'
+  fly-message: true
+  fly-message-enabled-text:
+  - '%plugin% &aFly has been enabled'
+  fly-message-disabled-text:
+  - '%plugin% &cFly has been disabled'
+  reload-message: true
+  reload-text:
+  - '%plugin% &aThe plugin has been reloaded'
+  version-message: true
+  simplefly.version-text:
+  - '%plugin% &aPlugin version: &b%version%'
+  command-no-argument-text:
+  - '%plugin% &fUse &e/sh help &fto see the command list'
+  no-perm: true
+  no-perm-text:
+  - '%plugin% &cYou don`t have permission to use that command'
+  console-error-text:
+  - You can`t use that command in console

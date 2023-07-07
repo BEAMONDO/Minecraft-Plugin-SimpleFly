@@ -1,0 +1,21 @@
+main: davigamer161.simplefly.SimpleFly
+version: 1.0.1
+name: SimpleFly
+
+commands:
+  fly:
+    description: Comando para usar fly
+  simplefly:
+    description: Comando principal
+    aliases: [sf]
+permissions:
+  simplefly.fly:
+    description: Permiso uso fly
+  simplefly.fly.others:
+    description: Permiso uso fly a otros
+  simplefly.help:
+    description: Permiso uso help
+  simplefly.reload:
+    description: Permiso uso reload
+  simplefly.version:
+    description: Permiso uso version
