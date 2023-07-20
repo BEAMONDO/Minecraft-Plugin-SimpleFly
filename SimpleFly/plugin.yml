@@ -1,8 +1,12 @@
 main: davigamer161.simplefly.SimpleFly
-version: 1.0.1
+version: 1.3.2
 name: SimpleFly
+softdepend: [Vault]
 
 commands:
+  simplefly.*:
+    default: op
+    description: Todos los permisos
   fly:
     description: Comando para usar fly
   simplefly:

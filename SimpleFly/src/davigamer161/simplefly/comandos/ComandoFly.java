@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import davigamer161.simplefly.SimpleFly;
+import net.milkbowl.vault.economy.Economy;
 
 public class ComandoFly implements CommandExecutor{
 
@@ -26,62 +27,156 @@ public class ComandoFly implements CommandExecutor{
 	public boolean onCommand(CommandSender sender, Command comando, String label, String[] args){
 		if(sender instanceof Player){
 			FileConfiguration config = plugin.getConfig();
+			FileConfiguration messages = plugin.getMessages();
 			Player jugador = (Player) sender;
 			if(args.length == 0){
-				flyMethod(jugador);
+				String poth = "Config.pay-to-fly";
+		if(jugador.hasPermission("simplefly.fly") && config.getString(poth).equals("true")){
+					Economy econ = plugin.getEconomy();
+        			double dinero = econ.getBalance(jugador);
+       				int precio = Integer.valueOf(config.getString("Config.fly-price"));
+					   if(dinero >=precio){
+						econ.withdrawPlayer(jugador, precio);
+				if(list_of_flying_players.contains(jugador)){
+					disableFlyMethod(jugador);
+				}
+				else if(!(list_of_flying_players.contains(jugador))){
+					enableFlyMethod(jugador);
+				}
+			}else{
+				String path = "Config.fly-message";
+						if(config.getString(path).equals("true")){
+							List<String> mensaje = messages.getStringList("Messages.fly.no-enought-money");
+							for(int i=0;i<mensaje.size();i++){
+								String texto = mensaje.get(i);
+								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version)));
+							}
+						}
+			}
+			}else if(jugador.hasPermission("simplefly.fly")){
+				if(list_of_flying_players.contains(jugador)){
+					disableFlyMethod(jugador);
+				}
+				else if(!(list_of_flying_players.contains(jugador))){
+					enableFlyMethod(jugador);
+				}
+			}else{
+				noPermMethod(jugador);
+			}
 			}else if(args.length == 1){
-				if(jugador.hasPermission("simplefly.fly.others")){
-					Player target = Bukkit.getPlayer(args[0]);
-                	flyMethod(target);
-				}else{
-					String path = "Config.no-perm";
-					if(config.getString(path).equals("true")){
-					List<String> mensaje = config.getStringList("Config.no-perm-text");
-						for(int i=0;i<mensaje.size();i++){
-							String texto = mensaje.get(i);
-							jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version)));
+				String poth = "Config.pay-to-fly";
+				if(jugador.hasPermission("simplefly.fly.others") && config.getString(poth).equals("true")){
+					Economy econ = plugin.getEconomy();
+        			double dinero = econ.getBalance(jugador);
+       				int precio = Integer.valueOf(config.getString("Config.fly-price"));
+					if(dinero >=precio){
+						Player target = Bukkit.getPlayer(args[0]);
+						econ.withdrawPlayer(jugador, precio);
+						if(list_of_flying_players.contains(target)){
+							disableFlyMethod(target);
+							String path = "Config.fly-message";
+						if(config.getString(path).equals("true")){
+							List<String> mensaje = messages.getStringList("Messages.fly.disabled-others");
+							for(int i=0;i<mensaje.size();i++){
+								String texto = mensaje.get(i);
+								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version).replaceAll("%target%", target.getName())));
+							}
+						}
+						}else if(!(list_of_flying_players.contains(target))){
+							enableFlyMethod(target);
+							String path = "Config.fly-message";
+							if(config.getString(path).equals("true")){
+							List<String> mensaje = messages.getStringList("Messages.fly.enabled-others");
+							for(int i=0;i<mensaje.size();i++){
+								String texto = mensaje.get(i);
+								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version).replaceAll("%target%", target.getName())));
+							}
 						}
 					}
+				}else{
+					Player target = Bukkit.getPlayer(args[0]);
+					String path = "Config.fly-message";
+							if(config.getString(path).equals("true")){
+							List<String> mensaje = messages.getStringList("Messages.fly.no-enought-money-others");
+							for(int i=0;i<mensaje.size();i++){
+								String texto = mensaje.get(i);
+								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version).replaceAll("%target%", target.getName())));
+							}
+						}
+				}
+				}else if(jugador.hasPermission("simplefly.fly.others")){
+						Player target = Bukkit.getPlayer(args[0]);
+						if(list_of_flying_players.contains(target)){
+							disableFlyMethod(target);
+							String path = "Config.fly-message";
+						if(config.getString(path).equals("true")){
+							List<String> mensaje = messages.getStringList("Messages.fly.disabled-others");
+							for(int i=0;i<mensaje.size();i++){
+								String texto = mensaje.get(i);
+								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version).replaceAll("%target%", target.getName())));
+							}
+						}
+						}else if(!(list_of_flying_players.contains(target))){
+							enableFlyMethod(target);
+							String path = "Config.fly-message";
+							if(config.getString(path).equals("true")){
+							List<String> mensaje = messages.getStringList("Messages.fly.enabled-others");
+							for(int i=0;i<mensaje.size();i++){
+								String texto = mensaje.get(i);
+								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version).replaceAll("%target%", target.getName())));
+							}
+						}
+					}
+				}
+				else{
+					noPermMethod(jugador);
 				}
 			}
 		}
 		return false;
 	}
-	private void flyMethod(Player jugador){
-		FileConfiguration config = plugin.getConfig();
-		if(jugador.hasPermission("simplefly.fly")){
-				if(list_of_flying_players.contains(jugador)){
+	private void disableFlyMethod(Player jugador){
 					list_of_flying_players.remove(jugador);
 					jugador.setAllowFlight(false);
+					FileConfiguration config = plugin.getConfig();
+					FileConfiguration messages = plugin.getMessages();
 					String path = "Config.fly-message";
 					if(config.getString(path).equals("true")){
-					List<String> mensaje = config.getStringList("Config.fly-message-disabled-text");
+					List<String> mensaje = messages.getStringList("Messages.fly.disabled");
 						for(int i=0;i<mensaje.size();i++){
 							String texto = mensaje.get(i);
 							jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version)));
 						}
 					}
-				}else if(!(list_of_flying_players.contains(jugador))){
-					list_of_flying_players.add(jugador);
+	}
+	private void enableFlyMethod(Player jugador){
+	list_of_flying_players.add(jugador);
 					jugador.setAllowFlight(true);
+					FileConfiguration config = plugin.getConfig();
+					FileConfiguration messages = plugin.getMessages();
 					String path = "Config.fly-message";
 					if(config.getString(path).equals("true")){
-					List<String> mensaje = config.getStringList("Config.fly-message-enabled-text");
+					List<String> mensaje = messages.getStringList("Messages.fly.enabled");
 						for(int i=0;i<mensaje.size();i++){
 							String texto = mensaje.get(i);
 							jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version)));
 						}
 					}
-				}
-			}else{
-				String path = "Config.no-perm";
-                if(config.getString(path).equals("true")){
-                List<String> mensaje = config.getStringList("Config.no-perm-text");
-                    for(int i=0;i<mensaje.size();i++){
-                        String texto = mensaje.get(i);
-                        jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version)));
-                    }
-				}
+	}
+	private void noPermMethod(Player jugador){
+		FileConfiguration config = plugin.getConfig();
+		FileConfiguration messages = plugin.getMessages();
+		String path = "Config.no-perm-message";
+		if(config.getString(path).equals("true")){
+			List<String> mensaje = messages.getStringList("Messages.no-perm");
+			for(int i=0;i<mensaje.size();i++){
+				String texto = mensaje.get(i);
+				jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version)));
 			}
+		}
 	}
 }
+
+
+
+

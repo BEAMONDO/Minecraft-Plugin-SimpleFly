@@ -18,14 +18,14 @@
 # ################################################################################## #
 
 
-#   fly-message: enable or disable the command message "/fly" and "/fly <player>"
-#   pay-to-fly: enable or disable the option to pay to fly (if enable is necessary the plugin Vault)
-#   fly-price: amount to pay if use "/fly" command if (pay-to-fly) is enable
-#   help-message: enable or disable the command message "/sf help"
-#   reload-message: enable or disable the command message "/sf reload"
-#   version-message: enable or disable the command message "/sf version"
-#   no-argument-message: enable or disable the command message "/sf" if it not have any argument
-#   no-perm-message: enable or disable message when use a command and don`t have permission
+#   fly-message: activar o desactivar el mensaje del comando "/sf help"
+#   reload-message: activar o desactivar el mensaje del comando "/sf reload"
+#   version-message: activar o desactivar el mensaje del comando "/sf version"
+#   fly-message: activar o desactivar el mensaje del comando "/fly" y "/fly <player>"
+#   pay-to-fly: activar o desactivar la opcion de pagar para volar (si se activa es necesario el plugin Vault)
+#   fly-price: cantidad a pagar al usar "/fly" si la opcion (pay-to-fly) esta activa
+#   no-argument-message: activar o desactivar el mensaje del comando "/sf" en el caso de no tener ningun argumento
+#   no-perm-message: activar o desactivar el mensaje para cuando usas un comando y no tienes permiso
 
 
 Config:

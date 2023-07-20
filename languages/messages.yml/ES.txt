@@ -1,0 +1,32 @@
+Messages:
+  fly:
+    enabled:
+    - '%plugin% &aFly ha sido activado'
+    disabled:
+    - '%plugin% &cFly ha sido desactivado'
+    enabled-others:
+    - '%plugin% &aHas activado el fly a &6%target%'
+    disabled-others:
+    - '%plugin% &Has desactivado el fly a &6%target%'
+    no-enought-money:
+    - '%plugin% &cNo tienes suficiente dinero para volar'
+    no-enought-money-others:
+    - '%plugin% &cNo tienes suficiente dinero para hacer volar a &6%target%'
+  help:
+  - '&b<-----------------&aCOMANDOS&b----------------->'
+  - '&e/sf help &7Muestra este mensaje'
+  - '&e/sf version &7Version del plugin'
+  - '&e/sf reload &7Recargar el plugin'
+  - '&e/fly &7Activa fly'
+  - '&e/fly <player> &7Activa fly para otro jugador'
+  reload:
+  - '%plugin% &aEl plugin ha sido recargado'
+  version:
+  - '%plugin% &aVersion &b%version%'
+  command-no-argument:
+  - '%plugin% &fUsa &e/sf help &fpara ver la lista de comandos'
+  no-perm:
+  - '%plugin% &cNo tienes permiso para ejecutar ese comando'
+  console-error:
+  - 'No puedes ejecutar ese comando desde la consola'
+
