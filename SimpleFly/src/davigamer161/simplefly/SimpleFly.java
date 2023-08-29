@@ -19,7 +19,7 @@ import davigamer161.simplefly.comandos.ComandoPrincipal;
 import net.milkbowl.vault.economy.Economy;
 
 public class SimpleFly extends JavaPlugin{
-	 private FileConfiguration messages = null;
+	  private FileConfiguration messages = null;
     private File messagesFile = null;
     public String rutaConfig;
     PluginDescriptionFile pdffile;

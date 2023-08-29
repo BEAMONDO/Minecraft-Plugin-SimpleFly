@@ -35,8 +35,15 @@ public class ComandoFly implements CommandExecutor{
 					Economy econ = plugin.getEconomy();
         			double dinero = econ.getBalance(jugador);
        				int precio = Integer.valueOf(config.getString("Config.fly-price"));
-					   if(dinero >=precio){
-						econ.withdrawPlayer(jugador, precio);
+					if(jugador.hasPermission("simplefly.econ.exempt")){
+					if(list_of_flying_players.contains(jugador)){
+					disableFlyMethod(jugador);
+					}
+					else if(!(list_of_flying_players.contains(jugador))){
+						enableFlyMethod(jugador);
+					}
+					}else if(dinero >=precio){
+					econ.withdrawPlayer(jugador, precio);
 				if(list_of_flying_players.contains(jugador)){
 					disableFlyMethod(jugador);
 				}
@@ -69,7 +76,30 @@ public class ComandoFly implements CommandExecutor{
 					Economy econ = plugin.getEconomy();
         			double dinero = econ.getBalance(jugador);
        				int precio = Integer.valueOf(config.getString("Config.fly-price"));
-					if(dinero >=precio){
+					if(jugador.hasPermission("simplefly.econ.exempt.others")){
+						Player target = Bukkit.getPlayer(args[0]);
+						if(list_of_flying_players.contains(target)){
+							disableFlyMethod(target);
+							String path = "Config.fly-message";
+						if(config.getString(path).equals("true")){
+							List<String> mensaje = messages.getStringList("Messages.fly.disabled-others");
+							for(int i=0;i<mensaje.size();i++){
+								String texto = mensaje.get(i);
+								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version).replaceAll("%target%", target.getName())));
+							}
+						}
+						}else if(!(list_of_flying_players.contains(target))){
+							enableFlyMethod(target);
+							String path = "Config.fly-message";
+							if(config.getString(path).equals("true")){
+							List<String> mensaje = messages.getStringList("Messages.fly.enabled-others");
+							for(int i=0;i<mensaje.size();i++){
+								String texto = mensaje.get(i);
+								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version).replaceAll("%target%", target.getName())));
+							}
+							}
+						}
+					}else if(dinero >=precio){
 						Player target = Bukkit.getPlayer(args[0]);
 						econ.withdrawPlayer(jugador, precio);
 						if(list_of_flying_players.contains(target)){
@@ -91,8 +121,8 @@ public class ComandoFly implements CommandExecutor{
 								String texto = mensaje.get(i);
 								jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', texto.replaceAll("%player%", jugador.getName()).replaceAll("%plugin%", plugin.nombre).replaceAll("%version%", plugin.version).replaceAll("%target%", target.getName())));
 							}
+							}
 						}
-					}
 				}else{
 					Player target = Bukkit.getPlayer(args[0]);
 					String path = "Config.fly-message";
