@@ -18,7 +18,7 @@
 # ################################################################################## #
 
 
-#   fly-message: activar o desactivar el mensaje del comando "/sf help"
+#   help-message: activar o desactivar el mensaje del comando "/sf help"
 #   reload-message: activar o desactivar el mensaje del comando "/sf reload"
 #   version-message: activar o desactivar el mensaje del comando "/sf version"
 #   fly-message: activar o desactivar el mensaje del comando "/fly" y "/fly <player>"
@@ -29,11 +29,11 @@
 
 
 Config:
-  fly-message: true
-  pay-to-fly: false
-  fly-price: 1000
   help-message: true
   reload-message: true
   version-message: true
+  fly-message: true
+  pay-to-fly: false
+  fly-price: 1000
   no-argument-message: true
   no-perm-message: true
