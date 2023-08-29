@@ -1,5 +1,5 @@
 main: davigamer161.simplefly.SimpleFly
-version: 1.4.1
+version: 1.4.2
 name: SimpleFly
 softdepend: [Vault]
 
