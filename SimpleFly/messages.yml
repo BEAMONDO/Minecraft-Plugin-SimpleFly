@@ -1,31 +1,22 @@
 Messages:
   fly:
-    enabled:
-    - '%plugin% &aFly has been enabled'
-    disabled:
-    - '%plugin% &cFly has been disabled'
-    enabled-others:
-    - '%plugin% &aYou enable fly to &6%target%'
-    disabled-others:
-    - '%plugin% &cYou disable fly to &6%target%'
-    no-enought-money:
-    - '%plugin% &cYou don`t have enough money to fly'
-    no-enought-money-others:
-    - '%plugin% &cYou don`t have enough money to enable fly to &6%target%'
+    enabled: '%plugin% &aFly has been enabled'
+    disabled: '%plugin% &cFly has been disabled'
+    enabled-others: '%plugin% &aYou enable fly to &6%target%'
+    disabled-others: '%plugin% &cYou disable fly to &6%target%'
+    no-enought-money: '%plugin% &cYou don`t have enough money to fly'
+    no-enought-money-others: '%plugin% &cYou don`t have enough money to enable fly to &6%target%'
   help:
   - '&b<-----------------&aCOMMANDS&b----------------->'
   - '&e/sf help &7Show this message'
   - '&e/sf version&7 &7Show plugin version'
   - '&e/sf reload &7Reload plugin'
-  - '&e/fly &7Enable fly'
-  - '&e/fly <player> &7Enable fly to other player'
-  reload:
-  - '%plugin% &aThe plugin has been reloaded'
-  version:
-  - '%plugin% &aPlugin version: &b%version%'
-  command-no-argument:
-  - '%plugin% &fUse &e/sf help &fto see the command list'
-  no-perm:
-  - '%plugin% &cYou don`t have permission to use that command'
-  console-error:
-  - You can`t use that command in console
+  - '&e/sf plugin &7Show plugin download link'
+  - '&e/fly &7Enable or disable fly'
+  - '&e/fly <player> &7Enable or disable fly to other player'
+  reload: '%plugin% &aThe plugin has been reloaded'
+  version: '%plugin% &aPlugin version: &b%version%'
+  command-no-argument: '%plugin% &fUse &e/sf help &fto see the command list'
+  no-perm: '%plugin% &cYou don`t have permission to use that command'
+  console-error: 'You can`t use that command in console'
+  update-checker: '%plugin% &bThere is a new version &e(&f%latestversion%&e)&b. Download it here: &7https://www.spigotmc.org/resources/111056/'

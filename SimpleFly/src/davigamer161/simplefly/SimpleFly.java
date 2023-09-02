@@ -8,23 +8,29 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import davigamer161.simplefly.comandos.ComandoFly;
 import davigamer161.simplefly.comandos.ComandoPrincipal;
+import davigamer161.simplefly.utils.UpdateChecker;
 import net.milkbowl.vault.economy.Economy;
 
 public class SimpleFly extends JavaPlugin{
 	  private FileConfiguration messages = null;
     private File messagesFile = null;
     public String rutaConfig;
+    public String rutaMessages;
     PluginDescriptionFile pdffile;
     private static Economy econ = null;
     public String version;
@@ -34,26 +40,29 @@ public class SimpleFly extends JavaPlugin{
     public SimpleFly(){
       this.pdffile = this.getDescription();
       this.version = this.pdffile.getVersion();
-      this.nombre = ChatColor.RED+"["+ChatColor.YELLOW+this.pdffile.getName()+ChatColor.RED+"] "+ChatColor.WHITE;
+      this.nombre = ChatColor.RED+"["+ChatColor.YELLOW+this.pdffile.getName()+ChatColor.RED+"]"+ChatColor.WHITE;
     }
     
 	//---------------------Para cuando se activa el plugin----------------------------------//
     //------------------------------Desde aqui-----------------------------//
     public void onEnable(){
       Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE+"<------------------------------------>");
-	    Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.WHITE+"Enabled, ("+ChatColor.GREEN+"Version: "+ChatColor.AQUA+version+ChatColor.WHITE+")");
+	    Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.WHITE+" Enabled, ("+ChatColor.GREEN+"Version: "+ChatColor.AQUA+version+ChatColor.WHITE+")");
       if(setupEconomy()){
-        Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.YELLOW+"Vault "+ChatColor.GREEN+"found");
+        Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.YELLOW+" Vault "+ChatColor.GREEN+"found");
       }else{
-        Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.YELLOW+"Vault "+ChatColor.RED+"not found");
+        Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.YELLOW+" Vault "+ChatColor.RED+"not found");
+        Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.YELLOW+" If you have Vault you also need EssentialsX");
       }
-	    Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.GOLD+"Thanks for use my plugin :)");
-	    Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.YELLOW+"Made by "+ChatColor.LIGHT_PURPLE+"davigamer161");
+	    Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.GOLD+" Thanks for use my plugin :)");
+	    Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.YELLOW+" Made by "+ChatColor.LIGHT_PURPLE+"davigamer161");
       Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE+"<------------------------------------>");
       registrarComandos();
+      registrarEventos();
       registrarConfig();
       registrarMensajes();
-      updateChecker();
+      checkearMesages();
+      comprobarActualizaciones();
     }
     //------------------------------Hasta aqui-----------------------------//
 
@@ -73,6 +82,16 @@ public class SimpleFly extends JavaPlugin{
     public void registrarComandos(){
         this.getCommand("fly").setExecutor(new ComandoFly(this));
         this.getCommand("simplefly").setExecutor(new ComandoPrincipal(this));
+      }
+    //------------------------------Hasta aqui-----------------------------//
+    
+    
+    
+  //-----------------------Para registrar eventos----------------------------------------//
+    //------------------------------Desde aqui-----------------------------//
+    public void registrarEventos(){
+    	PluginManager pm = getServer().getPluginManager();
+    	pm.registerEvents(new UpdateChecker(this), this);
       }
     //------------------------------Hasta aqui-----------------------------//
     
@@ -125,9 +144,22 @@ public class SimpleFly extends JavaPlugin{
       }
       public void registrarMensajes(){
         messagesFile = new File(this.getDataFolder(),"messages.yml");
+        rutaMessages = messagesFile.getPath();
         if(!messagesFile.exists()){
           this.getMessages().options().copyDefaults(true);
           saveMessages();
+        }
+      }
+      public void checkearMesages() {
+    	  Path archivo = Paths.get(rutaMessages);
+    	  try {
+          String texto = new String(Files.readAllBytes(archivo));
+          if(!texto.contains("update-checker:")) {
+            getMessages().set("Messages.update-checker", "%plugin% &bThere is a new version &e(&f%latestversion%&e)&b. Download it here: &7https://www.spigotmc.org/resources/111056/");
+            saveMessages();
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
         }
       }
       //------------------------------Hasta aqui-----------------------------//
@@ -154,26 +186,32 @@ public class SimpleFly extends JavaPlugin{
 
 
 
-    //-------------------------------Para auto actualizar--------------------------------------//
+    //--------------------------------Para auto actualizar----------------------------//
     //------------------------------Desde aqui-----------------------------//
-    public void updateChecker(){		  
+    public void comprobarActualizaciones(){		  
 		  try {
 			  HttpURLConnection con = (HttpURLConnection) new URL(
-	                  "https://api.spigotmc.org/legacy/update.php?resource=111056").openConnection();
+	          "https://api.spigotmc.org/legacy/update.php?resource=111056").openConnection();
 	          int timed_out = 1250;
 	          con.setConnectTimeout(timed_out);
 	          con.setReadTimeout(timed_out);
 	          latestversion = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
 	          if (latestversion.length() <= 7) {
 	        	  if(!version.equals(latestversion)){
-	        		  Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.RED +"There is a new version available. "+ChatColor.YELLOW+
-	        				  "("+ChatColor.GRAY+latestversion+ChatColor.YELLOW+")");
-	        		  Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.RED+"You can download it at: "+ChatColor.WHITE+"https://www.spigotmc.org/resources/111056/");  
+	        		  Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.AQUA+"There is a new version available. "+ChatColor.YELLOW+
+                    "("+ChatColor.GRAY+latestversion+ChatColor.YELLOW+")");
+	        		  Bukkit.getConsoleSender().sendMessage(nombre+ChatColor.AQUA+"You can download it at: "+ChatColor.WHITE+"https://www.spigotmc.org/resources/111056/");  
 	        	  }      	  
 	          }
-	      } catch (Exception ex) {
+	      } catch (Exception ex){
 	    	  Bukkit.getConsoleSender().sendMessage(nombre + ChatColor.RED +"Error while checking update.");
 	      }
 	  }
+    public String getVersion(){
+    	return this.version;
+    }
+    public String getLatestVersion(){
+    	return this.latestversion;	
+    }
     //------------------------------Hasta aqui-----------------------------//
 }

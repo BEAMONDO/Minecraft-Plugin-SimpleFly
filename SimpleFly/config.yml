@@ -18,22 +18,20 @@
 # ################################################################################## #
 
 
-#   help-message: enable or disable the command message "/sf help"
-#   reload-message: enable or disable the command message "/sf reload"
-#   version-message: enable or disable the command message "/sf version"
-#   fly-message: enable or disable the command message "/fly" and "/fly <player>"
-#   pay-to-fly: enable or disable the option to pay to fly (if enable is necessary the plugin Vault)
-#   fly-price: amount to pay if use "/fly" command if (pay-to-fly) is enable
-#   no-argument-message: enable or disable the command message "/sf" if it not have any argument
+#   update-message: enable or disable the update message when enter in server
+#   no-argument-message: enable or disable the command message "/sh" if it not have any argument
 #   no-perm-message: enable or disable message when use a command and don`t have permission
+
+#   fly-message: enable or disable the command message "/fly" and "/fly <player>
+#   pay-to-fly: enable or disable the option to pay to fly (if enable is necessary the plugin Vault and EssentialsX)
+#   fly-price: amount to pay if use "/fly" command if (pay-to-fly) is enable
 
 
 Config:
-  help-message: true
-  reload-message: true
-  version-message: true
+  update-message: true
+  no-argument-message: true
+  no-perm-message: true
   fly-message: true
   pay-to-fly: false
   fly-price: 1000
-  no-argument-message: true
-  no-perm-message: true
+  

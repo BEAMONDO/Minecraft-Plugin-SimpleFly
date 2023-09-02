@@ -1,29 +1,33 @@
 main: davigamer161.simplefly.SimpleFly
-version: 1.4.3
+version: 2.0.1
 name: SimpleFly
 softdepend: [Vault]
 
 commands:
-  simplefly.*:
-    default: op
-    description: Todos los permisos
   fly:
     description: Comando para usar fly
   simplefly:
     description: Comando principal
     aliases: [sf]
 permissions:
-  simplefly.fly:
-    description: Permiso uso fly
-  simplefly.fly.others:
-    description: Permiso uso fly a otros
+  simplefly.*:
+    default: op
+    description: Todos los permisos
   simplefly.help:
     description: Permiso uso help
   simplefly.reload:
     description: Permiso uso reload
   simplefly.version:
     description: Permiso uso version
+  simplefly.plugin:
+    description: Sirve para ver el link de descarga del plugin
+  simplefly.updatechecker:
+    description: Sirve para comprobar si hay una nueva version del plugin
   simplefly.econ.exempt:
     description: Sirve para no pagar al usar /fly
   simplefly.econ.exempt.others:
     description: Sirve para no pagar al usar /fly para otros
+  simplefly.fly:
+    description: Permiso uso fly
+  simplefly.fly.others:
+    description: Permiso uso fly a otros
